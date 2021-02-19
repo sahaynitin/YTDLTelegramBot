@@ -20,23 +20,23 @@ def help_message(message):
 
 @bot.message_handler(commands=['dl'], content_types=['text'])
 def dl(message):
-    bot.send_message(***REMOVED***, 'On the way!')
+    bot.send_message(message.chat.id, 'On the way!')
     url = re.findall(r'(https?://\S+)', message.text)
     video_id = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text)
     ydl_opts = {'outtmpl': '%(id)s.%(ext)s'}
     ydl = youtube_dl.YoutubeDL(ydl_opts)
-    bot.send_message(***REMOVED***, 'Downloading... (This could take a while)')
+    bot.send_message(message.chat.id, 'Downloading... (This could take a while)')
     with ydl:
         ydl.download(url)
-    bot.send_message(***REMOVED***, 'Sending video...')
+    bot.send_message(message.chat.id, 'Sending video...')
     video = open(video_id[-1] + '.mp4', 'rb')
-    bot.send_video(***REMOVED***, video)
+    bot.send_video(message.chat.id, video)
     os.remove(video_id[-1] + '.mp4')
-    bot.send_message(***REMOVED***, 'Done!')
+    bot.send_message(message.chat.id, 'Done!')
 
 @bot.message_handler(commands=['dlmp3'], content_types=['text'])
 def dlmp3(message):
-    bot.send_message(***REMOVED***, 'On the way!')
+    bot.send_message(message.chat.id, 'On the way!')
     url = re.findall(r'(https?://\S+)', message.text)
     audio_id = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text)
     ydl_opts = {
@@ -49,14 +49,14 @@ def dlmp3(message):
     }],
         }
     ydl = youtube_dl.YoutubeDL(ydl_opts)
-    bot.send_message(***REMOVED***, 'Downloading... (This could take a while)')
+    bot.send_message(message.chat.id, 'Downloading... (This could take a while)')
     with ydl:
         ydl.download(url)
-    bot.send_message(***REMOVED***, 'Sending audio...')
+    bot.send_message(message.chat.id, 'Sending audio...')
     audio = open(audio_id[-1] + '.mp3', 'rb')
-    bot.send_audio(***REMOVED***, audio)
+    bot.send_audio(message.chat.id, audio)
     os.remove(audio_id[-1] + '.mp3')
-    bot.send_message(***REMOVED***, 'Done!')
+    bot.send_message(message.chat.id, 'Done!')
 
 @bot.message_handler(commands=['id'], content_types=['text'])
 def send_video_id(message):
