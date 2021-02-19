@@ -3,14 +3,38 @@ import re
 import youtube_dl
 import os
 bot = telebot.TeleBot("***REMOVED***")
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-	bot.reply_to(message, "Hi!! Welcome to the YTDL Bot made by @galisteo02!!")
-	
+    
+    #LOG START
+    print(bcolors.FAIL + 'BOT STARTED\n' +
+    bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n'
+    + bcolors.ENDC)
+    #LOG END
+    
+    bot.reply_to(message, "Hi!! Welcome to the YTDL Bot made by @galisteo02!!")
+
 @bot.message_handler(commands=['help'])
 def help_message(message):
-	bot.reply_to(message,
+
+    #LOG START
+    print(bcolors.FAIL + 'HELP REQUESTED\n' +
+    bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n'
+    + bcolors.ENDC)
+    #LOG END
+
+    bot.reply_to(message,
 	'/start: Display a welcome message and credits\n'+
 	'/help: Display all commands available with descriptions\n' +
 	'/dl: Download a video [/dl URL]\n' +
@@ -23,6 +47,14 @@ def dl(message):
     bot.send_message(message.chat.id, 'On the way!')
     url = re.findall(r'(https?://\S+)', message.text)
     video_id = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text)
+
+    #LOG START
+    print(bcolors.WARNING + 'REQUEST FOR MP4 DOWNLOAD CREATED\n' +
+    bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' +
+    bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n' +
+    bcolors.OKGREEN + 'Video ID: ' + bcolors.OKCYAN + video_id[-1] + bcolors.ENDC)
+    #LOG END
+
     ydl_opts = {'outtmpl': '%(id)s.%(ext)s'}
     ydl = youtube_dl.YoutubeDL(ydl_opts)
     bot.send_message(message.chat.id, 'Downloading... (This could take a while)')
@@ -39,6 +71,14 @@ def dlmp3(message):
     bot.send_message(message.chat.id, 'On the way!')
     url = re.findall(r'(https?://\S+)', message.text)
     audio_id = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text)
+    
+    #LOG START
+    print(bcolors.WARNING + 'REQUEST FOR MP3 DOWNLOAD CREATED\n' +
+    bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' +
+    bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n' +
+    bcolors.OKGREEN + 'Audio ID: ' + bcolors.OKCYAN + audio_id[-1] + bcolors.ENDC)
+    #LOG END
+
     ydl_opts = {
         'outtmpl': '%(id)s.%(ext)s',
         'format': 'bestaudio/best',
@@ -62,6 +102,14 @@ def dlmp3(message):
 def send_video_id(message):
     url = re.findall(r'(https?://\S+)', message.text)
     video_id = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text)
+
+    #LOG START
+    print(bcolors.WARNING + 'REQUEST FOR ID CREATED\n' +
+    bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' +
+    bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n' +
+    bcolors.OKGREEN + 'ID: ' + bcolors.OKCYAN + video_id[-1] + bcolors.ENDC)
+    #LOG END
+
     bot.reply_to(message, 'Video ID: ' + video_id[-1])
 
 bot.polling()
