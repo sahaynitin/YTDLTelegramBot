@@ -18,7 +18,7 @@ class bcolors:
 def start_message(message):
     
     #LOG START
-    print(bcolors.FAIL + 'BOT STARTED\n' +
+    print(bcolors.WARNING + 'BOT STARTED\n' +
     bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n'
     + bcolors.ENDC)
     #LOG END
@@ -29,7 +29,7 @@ def start_message(message):
 def help_message(message):
 
     #LOG START
-    print(bcolors.FAIL + 'HELP REQUESTED\n' +
+    print(bcolors.WARNING + 'HELP REQUESTED\n' +
     bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n'
     + bcolors.ENDC)
     #LOG END
@@ -44,72 +44,105 @@ def help_message(message):
 
 @bot.message_handler(commands=['dl'], content_types=['text'])
 def dl(message):
-    bot.send_message(message.chat.id, 'On the way!')
     url = re.findall(r'(https?://\S+)', message.text)
     video_id = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text)
 
-    #LOG START
-    print(bcolors.WARNING + 'REQUEST FOR MP4 DOWNLOAD CREATED\n' +
-    bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' +
-    bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n' +
-    bcolors.OKGREEN + 'Video ID: ' + bcolors.OKCYAN + video_id[-1] + bcolors.ENDC)
-    #LOG END
+    if url:
+        #LOG START
+        print(bcolors.WARNING + 'REQUEST FOR MP4 CREATED\n' +
+        bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' +
+        bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n' +
+        bcolors.OKGREEN + 'Video ID: ' + bcolors.OKCYAN + video_id[-1] + '\n' 
+        + bcolors.ENDC)
+        #LOG END
 
-    ydl_opts = {'outtmpl': '%(id)s.%(ext)s'}
-    ydl = youtube_dl.YoutubeDL(ydl_opts)
-    bot.send_message(message.chat.id, 'Downloading... (This could take a while)')
-    with ydl:
-        ydl.download(url)
-    bot.send_message(message.chat.id, 'Sending video...')
-    video = open(video_id[-1] + '.mp4', 'rb')
-    bot.send_video(message.chat.id, video)
-    os.remove(video_id[-1] + '.mp4')
-    bot.send_message(message.chat.id, 'Done!')
+        bot.send_message(message.chat.id, 'On the way!')
+
+        ydl_opts = {'outtmpl': '%(id)s.%(ext)s'}
+        ydl = youtube_dl.YoutubeDL(ydl_opts)
+        bot.send_message(message.chat.id, 'Downloading... (This could take a while)')
+        with ydl:
+            ydl.download(url)
+        bot.send_message(message.chat.id, 'Sending video...')
+        video = open(video_id[-1] + '.mp4', 'rb')
+        bot.send_video(message.chat.id, video)
+        os.remove(video_id[-1] + '.mp4')
+        bot.send_message(message.chat.id, 'Done!')
+    else:
+        #LOG START
+        print(bcolors.FAIL + 'REQUEST FOR MP4 FAILED: NO URL\n' +
+        bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' 
+        + bcolors.ENDC)
+        #LOG END
+
+        bot.reply_to(message, 'No URL given :(')
 
 @bot.message_handler(commands=['dlmp3'], content_types=['text'])
 def dlmp3(message):
-    bot.send_message(message.chat.id, 'On the way!')
     url = re.findall(r'(https?://\S+)', message.text)
     audio_id = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text)
-    
-    #LOG START
-    print(bcolors.WARNING + 'REQUEST FOR MP3 DOWNLOAD CREATED\n' +
-    bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' +
-    bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n' +
-    bcolors.OKGREEN + 'Audio ID: ' + bcolors.OKCYAN + audio_id[-1] + bcolors.ENDC)
-    #LOG END
 
-    ydl_opts = {
-        'outtmpl': '%(id)s.%(ext)s',
-        'format': 'bestaudio/best',
-        'postprocessors': [{
-        'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        'preferredquality': '192',
-    }],
-        }
-    ydl = youtube_dl.YoutubeDL(ydl_opts)
-    bot.send_message(message.chat.id, 'Downloading... (This could take a while)')
-    with ydl:
-        ydl.download(url)
-    bot.send_message(message.chat.id, 'Sending audio...')
-    audio = open(audio_id[-1] + '.mp3', 'rb')
-    bot.send_audio(message.chat.id, audio)
-    os.remove(audio_id[-1] + '.mp3')
-    bot.send_message(message.chat.id, 'Done!')
+    if url:
+        #LOG START
+        print(bcolors.WARNING + 'REQUEST FOR MP3 CREATED\n' +
+        bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' +
+        bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n' +
+        bcolors.OKGREEN + 'Audio ID: ' + bcolors.OKCYAN + audio_id[-1] + '\n' 
+        + bcolors.ENDC)
+        #LOG END
+
+        bot.send_message(message.chat.id, 'On the way!')
+
+        ydl_opts = {
+            'outtmpl': '%(id)s.%(ext)s',
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+            }
+        ydl = youtube_dl.YoutubeDL(ydl_opts)
+        bot.send_message(message.chat.id, 'Downloading... (This could take a while)')
+        with ydl:
+            ydl.download(url)
+        bot.send_message(message.chat.id, 'Sending audio...')
+        audio = open(audio_id[-1] + '.mp3', 'rb')
+        bot.send_audio(message.chat.id, audio)
+        os.remove(audio_id[-1] + '.mp3')
+        bot.send_message(message.chat.id, 'Done!')
+    
+    else:
+        #LOG START
+        print(bcolors.FAIL + 'REQUEST FOR MP3 FAILED: NO URL\n' +
+        bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' 
+        + bcolors.ENDC)
+        #LOG END
+
+        bot.reply_to(message, 'No URL given :(')
 
 @bot.message_handler(commands=['id'], content_types=['text'])
 def send_video_id(message):
     url = re.findall(r'(https?://\S+)', message.text)
     video_id = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text)
+    
+    if url:
+        #LOG START
+        print(bcolors.WARNING + 'REQUEST FOR ID CREATED\n' +
+        bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' +
+        bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n' +
+        bcolors.OKGREEN + 'ID: ' + bcolors.OKCYAN + video_id[-1] + '\n' 
+        + bcolors.ENDC)
+        #LOG END
 
-    #LOG START
-    print(bcolors.WARNING + 'REQUEST FOR ID CREATED\n' +
-    bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' +
-    bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n' +
-    bcolors.OKGREEN + 'ID: ' + bcolors.OKCYAN + video_id[-1] + bcolors.ENDC)
-    #LOG END
+        bot.reply_to(message, 'Video ID: ' + video_id[-1])
+    else:
+        #LOG START
+        print(bcolors.FAIL + 'REQUEST FOR ID FAILED: NO URL\n' +
+        bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(message.chat.id) + '\n' 
+        + bcolors.ENDC)
+        #LOG END
 
-    bot.reply_to(message, 'Video ID: ' + video_id[-1])
+        bot.reply_to(message, 'No URL given :(')
 
 bot.polling()
