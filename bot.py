@@ -3,7 +3,7 @@ import re
 import youtube_dl
 import os
 from Extra.classes import bcolors
-from Extra.functions import is_supported
+from Extra.functions import is_supported, getfilename
 from Extra.messages import print_log, print_log_simple, progress_msg
 bot = telebot.TeleBot("***REMOVED***") # OG BOT
 #bot = telebot.TeleBot("***REMOVED***") #TEST BOT
@@ -41,7 +41,9 @@ def dl(message):
     if url and is_supported(url[-1]): #CHECK IF URL EXIST AND URL IS SUPPORTED
         print_log('dl', 'OK', message.chat.id, c_id, url, message)
         progress_msg(message.chat.id, 1)
-        ydl_opts = {'outtmpl': c_id[-1] + '.%(ext)s'}
+        ydl_opts = {
+        'outtmpl': c_id[-1] + '.%(ext)s',
+        }
         ydl = youtube_dl.YoutubeDL(ydl_opts)
         progress_msg(message.chat.id, 2)
         try:
@@ -51,9 +53,10 @@ def dl(message):
             print_log('dl', 'D_ERROR', message.chat.id, c_id, url, message)
             return
         progress_msg(message.chat.id, 3)
-        video = open(c_id[-1] + '.mp4', 'rb')
+        filename = getfilename(c_id[-1])
+        video = open(filename, 'rb')
         bot.send_video(message.chat.id, video)
-        os.remove(c_id[-1] + '.mp4')
+        os.remove(filename)
         progress_msg(message.chat.id, 4)
     else:
         print_log('dl', 'ERROR', message.chat.id, c_id, url, message)
