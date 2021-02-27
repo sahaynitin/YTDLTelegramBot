@@ -2,7 +2,7 @@ import telebot
 import re
 import youtube_dl
 import os
-from Extra.classes import bcolors, replyes
+from Extra.classes import bcolors, replies
 from Extra.functions import is_supported, download
 from Extra.messages import print_log, print_log_simple
 bot = telebot.TeleBot("***REMOVED***") # OG BOT
@@ -18,12 +18,12 @@ def start_message(message):
     markup = telebot.types.InlineKeyboardMarkup()
     markup.add(telebot.types.InlineKeyboardButton(text='Help ℹ️', callback_data='help'))
     print_log_simple('start', message.chat.id)
-    bot.send_message(message.chat.id, replyes.WELCOME, reply_markup=markup)
+    bot.send_message(message.chat.id, replies.WELCOME, reply_markup=markup)
 
 @bot.message_handler(commands=['help']) #CHECK FOR /HELP
 def help_message(message):
     print_log_simple('help', message.chat.id)
-    bot.send_message(message.chat.id, replyes.HELP)
+    bot.send_message(message.chat.id, replies.HELP)
 
 @bot.message_handler(commands=['dl'], content_types=['text']) #CHECK FOR /dl
 def dl(message):
@@ -59,8 +59,8 @@ def send_video_id(message):
     if url:
         if is_supported(url[-1]):
             print_log('id', 'OK', message.chat.id, c_id, url, message)
-            bot.send_message(message.chat.id, replyes.DISCLAIMER)
-            bot.send_message(message.chat.id, replyes.ID + c_id[-1])
+            bot.send_message(message.chat.id, replies.DISCLAIMER)
+            bot.send_message(message.chat.id, replies.ID + c_id[-1])
         else:
             print_log('id', 'SUPP_ERROR', message.chat.id, c_id, url, message)
     else:

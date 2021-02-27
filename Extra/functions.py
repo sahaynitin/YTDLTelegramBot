@@ -36,17 +36,17 @@ def getfilename(cid):
         filename= cid+extension
         return filename
 
-def download(typem, sts, chatid, c_id, url, message):
+def download(typem, sts, chatid, cid, url, message):
 
-    print_log(typem, sts, chatid, c_id, url, message)
+    print_log(typem, sts, chatid, cid, url, message)
     progress_msg(chatid, 1, typem)
     if typem == 'dl':
         ydl_opts = {
-        'outtmpl': c_id[-1] + '.%(ext)s',
+        'outtmpl': cid[-1] + '.%(ext)s',
         }
     if typem == 'dlmp3':
         ydl_opts = {
-        'outtmpl': c_id[-1] + '.%(ext)s',
+        'outtmpl': cid[-1] + '.%(ext)s',
         'format': 'bestaudio/best',
         'postprocessors': [{
         'key': 'FFmpegExtractAudio',
@@ -59,10 +59,10 @@ def download(typem, sts, chatid, c_id, url, message):
         with ydl:
             ydl.download(url)
     except youtube_dl.utils.DownloadError:
-        print_log(type, 'D_ERROR', chatid, c_id, url, message)
+        print_log(typem, 'D_ERROR', chatid, cid, url, message)
         return
     progress_msg(chatid, 3, typem)
-    filename = getfilename(c_id[-1])
+    filename = getfilename(cid[-1])
     file = open(filename, 'rb')
     if typem == 'dl':
         bot.send_video(chatid, file)

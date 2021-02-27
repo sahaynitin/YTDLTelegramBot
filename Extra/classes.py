@@ -9,7 +9,7 @@ class bcolors: #COLORS CLASS FOR COLOR CODING PRINT LOGS
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-class replyes:
+class replies:
     HELP = ('/start: Display a welcome message and credits\n'+
 	       '/help: Display all commands available with descriptions\n' +
 	       '/dl: Download a video [/dl URL]\n' +
