@@ -43,7 +43,7 @@ def print_log(typem, case, chatid, cid, url, message):
 		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
 		+ bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n'
 		+ bcolors.ENDC)
-		progress_msg(chatid, 5)
+		progress_msg(chatid, 5, typem)
 		return
 
 def reply_error(message, error_status):
