@@ -1,12 +1,11 @@
 import telebot
 import re
-import youtube_dl
 import os
 from Extra.classes import bcolors, replies
 from Extra.functions import is_supported, download
 from Extra.messages import print_log, print_log_simple
-#bot = telebot.TeleBot("***REMOVED***") # OG BOT
-bot = telebot.TeleBot("***REMOVED***") #TEST BOT
+bot = telebot.TeleBot("***REMOVED***") # OG BOT
+#bot = telebot.TeleBot("***REMOVED***") #TEST BOT
 
 @bot.callback_query_handler(func=lambda call: True)
 def query_handler(call):
@@ -32,11 +31,11 @@ def dl(message):
 
     if url: #CHECK IF URL EXIST AND URL IS SUPPORTED
         if is_supported(url[-1]): #CHECK IF URL IS SUPPORTED
-            download('dl', 'OK', message.chat.id, cid, url, message)
+            download('video', 'OK', message.chat.id, cid, url, message)
         else:
-            print_log('dl', 'SUPP_ERROR', message.chat.id, cid, url, message)
+            print_log('video', 'SUPP_ERROR', message.chat.id, cid, url, message)
     else:
-        print_log('dl', 'URL_ERROR', message.chat.id, cid, url, message)
+        print_log('video', 'URL_ERROR', message.chat.id, cid, url, message)
 
 @bot.message_handler(commands=['dlmp3'], content_types=['text']) #CHECK FOR /dlmp3
 def dlmp3(message):
@@ -45,11 +44,11 @@ def dlmp3(message):
 
     if url: #CHECK IF URL EXIST
         if is_supported(url[-1]): #CHECK IF URL IS SUPPORTED
-            download('dlmp3', 'OK', message.chat.id, cid, url, message)
+            download('audio', 'OK', message.chat.id, cid, url, message)
         else:
-            print_log('dlmp3', 'SUPP_ERROR', message.chat.id, cid, url, message)
+            print_log('audio', 'SUPP_ERROR', message.chat.id, cid, url, message)
     else:
-        print_log('dlmp3', 'URL_ERROR', message.chat.id, cid, url, message)
+        print_log('audio', 'URL_ERROR', message.chat.id, cid, url, message)
 
 @bot.message_handler(commands=['id'], content_types=['text']) #CHECK FOR /id
 def send_video_id(message):

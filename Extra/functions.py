@@ -2,8 +2,8 @@ import youtube_dl
 import os
 import telebot
 from Extra.messages import print_log, print_log_simple, progress_msg
-#bot = telebot.TeleBot("***REMOVED***") #OG BOT
-bot = telebot.TeleBot("***REMOVED***") #TEST BOT
+bot = telebot.TeleBot("***REMOVED***") #OG BOT
+#bot = telebot.TeleBot("***REMOVED***") #TEST BOT
 
 # cid: Content ID
 # url: Content URL
@@ -37,14 +37,13 @@ def getfilename(cid):
         return filename
 
 def download(typem, sts, chatid, cid, url, message):
-
     print_log(typem, sts, chatid, cid, url, message)
     progress_msg(chatid, 1, typem)
-    if typem == 'dl':
+    if typem == 'video':
         ydl_opts = {
         'outtmpl': cid[-1] + '.%(ext)s',
         }
-    if typem == 'dlmp3':
+    if typem == 'audio':
         ydl_opts = {
         'outtmpl': cid[-1] + '.%(ext)s',
         'format': 'bestaudio/best',
@@ -64,9 +63,9 @@ def download(typem, sts, chatid, cid, url, message):
     progress_msg(chatid, 3, typem)
     filename = getfilename(cid[-1])
     file = open(filename, 'rb')
-    if typem == 'dl':
+    if typem == 'video':
         bot.send_video(chatid, file)
-    if typem == 'dlmp3':
+    if typem == 'audio':
         bot.send_audio(chatid, file)
     os.remove(filename)
     progress_msg(chatid, 4, typem)

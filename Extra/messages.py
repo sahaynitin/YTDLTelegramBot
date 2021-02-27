@@ -1,7 +1,7 @@
 from Extra.classes import bcolors, replies
 import telebot
-#bot = telebot.TeleBot("***REMOVED***") #OG BOT
-bot = telebot.TeleBot("***REMOVED***") #TEST BOT
+bot = telebot.TeleBot("***REMOVED***") #OG BOT
+#bot = telebot.TeleBot("***REMOVED***") #TEST BOT
 
 # typem: Type Of Petition [MP3, MP4, ID]
 # case: ERROR or OK
@@ -11,38 +11,33 @@ bot = telebot.TeleBot("***REMOVED***") #TEST BOT
 # message: message
 
 def print_log_simple(typem, chatid):
-	print(bcolors.WARNING + 'REQUEST FOR ' + typem + ' CREATED\n'
-	+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
-	+ bcolors.ENDC)
+	print('\n' + bcolors.WARNING + 'REQUEST FOR ' + typem + ' CREATED\n'
+	+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + bcolors.ENDC)
 
 def print_log(typem, case, chatid, cid, url, message):
 	if case == 'OK':
-		print(bcolors.WARNING + 'REQUEST FOR ' + typem + ' CREATED\n'
+		print('\n' + bcolors.WARNING + 'REQUEST FOR ' + typem + ' CREATED\n'
 		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
 		+ bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n'
-		+ bcolors.OKGREEN + 'ID: ' + bcolors.OKCYAN + cid[-1] + '\n'
-		+ bcolors.ENDC)
+		+ bcolors.OKGREEN + 'ID: ' + bcolors.OKCYAN + cid[-1] + '\n' + bcolors.ENDC)
 
 	if case == 'URL_ERROR':
-		print(bcolors.FAIL + 'REQUEST FOR ' + typem + ' FAILED: No URL\n'
-		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
-		+ bcolors.ENDC)
+		print('\n' + bcolors.FAIL + 'REQUEST FOR ' + typem + ' FAILED: No URL\n'
+		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + bcolors.ENDC)
 		reply_error(message, 1)
 		return
 
 	if case == 'SUPP_ERROR':
-		print(bcolors.FAIL + 'REQUEST FOR ' + typem + ' FAILED: Invalid URL\n'
+		print('\n' + bcolors.FAIL + 'REQUEST FOR ' + typem + ' FAILED: Invalid URL\n'
 		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
-		+ bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n'
-		+ bcolors.ENDC)
+		+ bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + bcolors.ENDC)
 		reply_error(message, 2)
 		return
 
 	if case == 'D_ERROR':
-		print(bcolors.FAIL + 'DOWNLOAD OF ' + typem + ' FAILED: Unsupported URL\n'
+		print('\n' + bcolors.FAIL + 'DOWNLOAD OF ' + typem + ' FAILED: Unsupported URL\n'
 		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
-		+ bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + '\n'
-		+ bcolors.ENDC)
+		+ bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + bcolors.ENDC)
 		progress_msg(chatid, 5, typem)
 		return
 
@@ -63,10 +58,10 @@ def progress_msg(chatid, progress, typem):
 		bot.send_message(chatid, replies.DOWNLOADING)
 		return
 	if progress == 3:
-		if typem == 'dl':
+		if typem == 'video':
 			bot.send_message(chatid, replies.SND_VIDEO)
 			return
-		if typem == 'dlmp3':
+		if typem == 'audio':
 			bot.send_message(chatid, replies.SND_AUDIO)
 			return
 	if progress == 4:
