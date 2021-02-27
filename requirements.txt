@@ -22,4 +22,4 @@ tqdm==4.58.0
 tzlocal==2.1
 urllib3==1.26.3
 verboselogs==1.7
-youtube-dl==2021.2.10
+youtube-dl==2021.2.22
