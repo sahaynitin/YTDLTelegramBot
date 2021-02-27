@@ -57,7 +57,7 @@ def send_video_id(message):
     c_id = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text) #GET CONTENT ID
 
     if url:
-        if is_supported(url[-1])
+        if is_supported(url[-1]):
             print_log('id', 'OK', message.chat.id, c_id, url, message)
             bot.send_message(message.chat.id, replyes.DISCLAIMER)
             bot.send_message(message.chat.id, replyes.ID + c_id[-1])
