@@ -2,8 +2,8 @@ import youtube_dl
 import os
 import telebot
 from Extra.messages import print_log, print_log_simple, progress_msg
-bot = telebot.TeleBot("***REMOVED***") #OG BOT
-#bot = telebot.TeleBot("***REMOVED***") #TEST BOT
+#bot = telebot.TeleBot("***REMOVED***") #OG BOT
+bot = telebot.TeleBot("***REMOVED***") #TEST BOT
 
 # cid: Content ID
 # url: Content URL

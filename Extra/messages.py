@@ -1,7 +1,7 @@
 from Extra.classes import bcolors, replies
 import telebot
-bot = telebot.TeleBot("***REMOVED***") #OG BOT
-#bot = telebot.TeleBot("***REMOVED***") #TEST BOT
+#bot = telebot.TeleBot("***REMOVED***") #OG BOT
+bot = telebot.TeleBot("***REMOVED***") #TEST BOT
 
 # typem: Type Of Petition [MP3, MP4, ID]
 # case: ERROR or OK
