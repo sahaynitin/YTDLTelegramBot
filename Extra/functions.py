@@ -56,7 +56,7 @@ def download(typem, sts, chatid, cid, url, message, bot):
         with ydl:
             ydl.download(url)
     except youtube_dl.utils.DownloadError:
-        print_log(typem, 'D_ERROR', chatid, cid, url, message)
+        print_log(typem, 'D_ERROR', chatid, cid, url, message, bot)
         return
     progress_msg(chatid, 3, typem, bot)
     filename = getfilename(cid[-1])
