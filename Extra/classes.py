@@ -26,3 +26,4 @@ class replies:
     SND_VIDEO = 'Sending video... ⬆️'
     DONE = 'Done! ✅'
     DWN_ERROR = 'Download ERROR! Unsupported URL ❌'
+    GT_LINK = 'Getting download link...'

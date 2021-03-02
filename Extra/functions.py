@@ -2,8 +2,6 @@ import youtube_dl
 import os
 import telebot
 from Extra.messages import print_log, print_log_simple, progress_msg
-bot = telebot.TeleBot("***REMOVED***") #OG BOT
-#bot = telebot.TeleBot("***REMOVED***") #TEST BOT
 
 # cid: Content ID
 # url: Content URL
@@ -36,9 +34,12 @@ def getfilename(cid):
         filename= cid+extension
         return filename
 
-def download(typem, sts, chatid, cid, url, message):
-    print_log(typem, sts, chatid, cid, url, message)
-    progress_msg(chatid, 1, typem)
+def download(typem, sts, chatid, cid, url, message, bot):
+    print_log(typem, sts, chatid, cid, url, message, bot)
+    progress_msg(chatid, 1, typem, bot)
+    if 'instagram.com' in url[-1]:
+        instadl(typem, chatid, cid, url, message, bot)
+        return
     if typem == 'video':
         ydl_opts = {
         'outtmpl': cid[-1] + '.%(ext)s',
@@ -53,14 +54,14 @@ def download(typem, sts, chatid, cid, url, message):
         'preferredquality': '192',
         }],}
     ydl = youtube_dl.YoutubeDL(ydl_opts)
-    progress_msg(chatid, 2, typem)
+    progress_msg(chatid, 2, typem, bot)
     try:
         with ydl:
             ydl.download(url)
     except youtube_dl.utils.DownloadError:
         print_log(typem, 'D_ERROR', chatid, cid, url, message)
         return
-    progress_msg(chatid, 3, typem)
+    progress_msg(chatid, 3, typem, bot)
     filename = getfilename(cid[-1])
     file = open(filename, 'rb')
     if typem == 'video':
@@ -68,4 +69,28 @@ def download(typem, sts, chatid, cid, url, message):
     if typem == 'audio':
         bot.send_audio(chatid, file)
     os.remove(filename)
-    progress_msg(chatid, 4, typem)
+    progress_msg(chatid, 4, typem, bot)
+
+def instadl(typem, chatid, cid, url, message, bot):
+    ydl = youtube_dl.YoutubeDL({'outtmpl': '%(id)s%(ext)s'})
+    try:
+        with ydl:
+            result = ydl.extract_info(
+                url[-1],
+                download=False  # We just want to extract the info
+            )
+        progress_msg(chatid, 6, typem, bot)
+        if 'entries' in result:
+            # Can be a playlist or a list of videos
+            video = result['entries'][0]
+        else:
+            # Just a video
+            video = result
+
+        for i in video['formats']:
+            link = '<a href=\"' + i['url'] + '\">' + 'link' + '</a>'
+
+            bot.send_message(chatid, link, parse_mode='HTML', disable_notification=True)
+        progress_msg(chatid, 4, typem, bot)
+    except Exception as e:
+        print_log(typem, 'URL_ERROR', chatid, cid, url, message, bot)

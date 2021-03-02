@@ -1,7 +1,5 @@
 from Extra.classes import bcolors, replies
 import telebot
-bot = telebot.TeleBot("***REMOVED***") #OG BOT
-#bot = telebot.TeleBot("***REMOVED***") #TEST BOT
 
 # typem: Type Of Petition [MP3, MP4, ID]
 # case: ERROR or OK
@@ -14,7 +12,7 @@ def print_log_simple(typem, chatid):
 	print('\n' + bcolors.WARNING + 'REQUEST FOR ' + typem + ' CREATED\n'
 	+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + bcolors.ENDC)
 
-def print_log(typem, case, chatid, cid, url, message):
+def print_log(typem, case, chatid, cid, url, message, bot):
 	if case == 'OK':
 		print('\n' + bcolors.WARNING + 'REQUEST FOR ' + typem + ' CREATED\n'
 		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
@@ -24,24 +22,24 @@ def print_log(typem, case, chatid, cid, url, message):
 	if case == 'URL_ERROR':
 		print('\n' + bcolors.FAIL + 'REQUEST FOR ' + typem + ' FAILED: No URL\n'
 		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + bcolors.ENDC)
-		reply_error(message, 1)
+		reply_error(message, 1, bot)
 		return
 
 	if case == 'SUPP_ERROR':
 		print('\n' + bcolors.FAIL + 'REQUEST FOR ' + typem + ' FAILED: Invalid URL\n'
 		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
 		+ bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + bcolors.ENDC)
-		reply_error(message, 2)
+		reply_error(message, 2, bot)
 		return
 
 	if case == 'D_ERROR':
 		print('\n' + bcolors.FAIL + 'DOWNLOAD OF ' + typem + ' FAILED: Unsupported URL\n'
 		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
 		+ bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + bcolors.ENDC)
-		progress_msg(chatid, 5, typem)
+		progress_msg(chatid, 5, typem, bot)
 		return
 
-def reply_error(message, error_status):
+def reply_error(message, error_status, bot):
 	if error_status == 1:
 		bot.reply_to(message, replies.URL_ERROR)
 		return
@@ -50,7 +48,7 @@ def reply_error(message, error_status):
 		bot.reply_to(message, replies.SUPP_ERROR)
 		return
 
-def progress_msg(chatid, progress, typem):
+def progress_msg(chatid, progress, typem, bot):
 	if progress == 1:
 		bot.send_message(chatid, replies.OTW)
 		return
@@ -69,3 +67,5 @@ def progress_msg(chatid, progress, typem):
 		return
 	if progress	== 5:
 		bot.send_message(chatid, replies.DWN_ERROR)
+	if progress == 6:
+		bot.send_message(chatid, replies.GT_LINK)

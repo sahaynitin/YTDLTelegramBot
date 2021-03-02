@@ -31,11 +31,11 @@ def dl(message):
 
     if url: #CHECK IF URL EXIST AND URL IS SUPPORTED
         if is_supported(url[-1]): #CHECK IF URL IS SUPPORTED
-            download('video', 'OK', message.chat.id, cid, url, message)
+            download('video', 'OK', message.chat.id, cid, url, message, bot)
         else:
-            print_log('video', 'SUPP_ERROR', message.chat.id, cid, url, message)
+            print_log('video', 'SUPP_ERROR', message.chat.id, cid, url, message, bot)
     else:
-        print_log('video', 'URL_ERROR', message.chat.id, cid, url, message)
+        print_log('video', 'URL_ERROR', message.chat.id, cid, url, message, bot)
 
 @bot.message_handler(commands=['dlmp3'], content_types=['text']) #CHECK FOR /dlmp3
 def dlmp3(message):
@@ -44,11 +44,11 @@ def dlmp3(message):
 
     if url: #CHECK IF URL EXIST
         if is_supported(url[-1]): #CHECK IF URL IS SUPPORTED
-            download('audio', 'OK', message.chat.id, cid, url, message)
+            download('audio', 'OK', message.chat.id, cid, url, message, bot)
         else:
-            print_log('audio', 'SUPP_ERROR', message.chat.id, cid, url, message)
+            print_log('audio', 'SUPP_ERROR', message.chat.id, cid, url, message, bot)
     else:
-        print_log('audio', 'URL_ERROR', message.chat.id, cid, url, message)
+        print_log('audio', 'URL_ERROR', message.chat.id, cid, url, message, bot)
 
 @bot.message_handler(commands=['id'], content_types=['text']) #CHECK FOR /id
 def send_video_id(message):
@@ -57,12 +57,12 @@ def send_video_id(message):
 
     if url:
         if is_supported(url[-1]):
-            print_log('id', 'OK', message.chat.id, cid, url, message)
+            print_log('id', 'OK', message.chat.id, cid, url, message, bot)
             bot.send_message(message.chat.id, replies.DISCLAIMER)
             bot.send_message(message.chat.id, replies.ID + cid[-1])
         else:
-            print_log('id', 'SUPP_ERROR', message.chat.id, cid, url, message)
+            print_log('id', 'SUPP_ERROR', message.chat.id, cid, url, message, bot)
     else:
-        print_log('id', 'URL_ERROR', message.chat.id, cid, url, message)
+        print_log('id', 'URL_ERROR', message.chat.id, cid, url, message, bot)
 
 bot.polling()
