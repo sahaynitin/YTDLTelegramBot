@@ -4,7 +4,9 @@ import os
 from Extra.classes import bcolors, replies
 from Extra.functions import is_supported, download
 from Extra.messages import print_log, print_log_simple
-bot = telebot.TeleBot("***REMOVED***") # OG BOT
+
+token = os.environ['TELEGRAM_TOKEN'] #GET TOKEN FROM HEROKU
+bot = telebot.TeleBot(token) # OG BOT
 #bot = telebot.TeleBot("***REMOVED***") #TEST BOT
 
 @bot.callback_query_handler(func=lambda call: True)

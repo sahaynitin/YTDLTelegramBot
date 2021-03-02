@@ -37,9 +37,6 @@ def getfilename(cid):
 def download(typem, sts, chatid, cid, url, message, bot):
     print_log(typem, sts, chatid, cid, url, message, bot)
     progress_msg(chatid, 1, typem, bot)
-    if 'instagram.com' in url[-1]:
-        instadl(typem, chatid, cid, url, message, bot)
-        return
     if typem == 'video':
         ydl_opts = {
         'outtmpl': cid[-1] + '.%(ext)s',
@@ -70,27 +67,3 @@ def download(typem, sts, chatid, cid, url, message, bot):
         bot.send_audio(chatid, file)
     os.remove(filename)
     progress_msg(chatid, 4, typem, bot)
-
-def instadl(typem, chatid, cid, url, message, bot):
-    ydl = youtube_dl.YoutubeDL({'outtmpl': '%(id)s%(ext)s'})
-    try:
-        with ydl:
-            result = ydl.extract_info(
-                url[-1],
-                download=False  # We just want to extract the info
-            )
-        progress_msg(chatid, 6, typem, bot)
-        if 'entries' in result:
-            # Can be a playlist or a list of videos
-            video = result['entries'][0]
-        else:
-            # Just a video
-            video = result
-
-        for i in video['formats']:
-            link = '<a href=\"' + i['url'] + '\">' + 'link' + '</a>'
-
-            bot.send_message(chatid, link, parse_mode='HTML', disable_notification=True)
-        progress_msg(chatid, 4, typem, bot)
-    except Exception as e:
-        print_log(typem, 'URL_ERROR', chatid, cid, url, message, bot)
