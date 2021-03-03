@@ -30,41 +30,44 @@ def help_message(message):
 def dl(message):
     url = re.findall(r'(https?://\S+)', message.text) #PARSE URL
     cid = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text) #GET CONTENT ID
+    chatid = message.chat.id
 
     if url: #CHECK IF URL EXIST AND URL IS SUPPORTED
-        if is_supported(url[-1]): #CHECK IF URL IS SUPPORTED
-            download('video', 'OK', message.chat.id, cid, url, message, bot)
+        if is_supported(url[-1], chatid, bot): #CHECK IF URL IS SUPPORTED
+            download('video', 'OK', chatid, cid, url, message, bot)
         else:
-            print_log('video', 'SUPP_ERROR', message.chat.id, cid, url, message, bot)
+            print_log('video', 'SUPP_ERROR', chatid, cid, url, message, bot)
     else:
-        print_log('video', 'URL_ERROR', message.chat.id, cid, url, message, bot)
+        print_log('video', 'URL_ERROR', chatid, cid, url, message, bot)
 
 @bot.message_handler(commands=['dlmp3'], content_types=['text']) #CHECK FOR /dlmp3
 def dlmp3(message):
     url = re.findall(r'(https?://\S+)', message.text) #PARSE URL
     cid = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text) #GET CONTENT ID
+    chatid = message.chat.id
 
     if url: #CHECK IF URL EXIST
-        if is_supported(url[-1]): #CHECK IF URL IS SUPPORTED
-            download('audio', 'OK', message.chat.id, cid, url, message, bot)
+        if is_supported(url[-1], chatid, bot): #CHECK IF URL IS SUPPORTED
+            download('audio', 'OK', chatid, cid, url, message, bot)
         else:
-            print_log('audio', 'SUPP_ERROR', message.chat.id, cid, url, message, bot)
+            print_log('audio', 'SUPP_ERROR', chatid, cid, url, message, bot)
     else:
-        print_log('audio', 'URL_ERROR', message.chat.id, cid, url, message, bot)
+        print_log('audio', 'URL_ERROR', chatid, cid, url, message, bot)
 
 @bot.message_handler(commands=['id'], content_types=['text']) #CHECK FOR /id
 def send_video_id(message):
     url = re.findall(r'(https?://\S+)', message.text) #PARSE URL
     cid = re.findall(r"(?<![\"=\w])(?:[^\W_]+)(?![\"=\w]+)", message.text) #GET CONTENT ID
+    chatid = message.chat.id
 
     if url:
-        if is_supported(url[-1]):
-            print_log('id', 'OK', message.chat.id, cid, url, message, bot)
-            bot.send_message(message.chat.id, replies.DISCLAIMER)
-            bot.send_message(message.chat.id, replies.ID + cid[-1])
+        if is_supported(url[-1], chatid, bot):
+            print_log('id', 'OK', chatid, cid, url, message, bot)
+            bot.send_message(chatid, replies.DISCLAIMER)
+            bot.send_message(chatid, replies.ID + cid[-1])
         else:
-            print_log('id', 'SUPP_ERROR', message.chat.id, cid, url, message, bot)
+            print_log('id', 'SUPP_ERROR', chatid, cid, url, message, bot)
     else:
-        print_log('id', 'URL_ERROR', message.chat.id, cid, url, message, bot)
+        print_log('id', 'URL_ERROR', chatid, cid, url, message, bot)
 
 bot.polling()

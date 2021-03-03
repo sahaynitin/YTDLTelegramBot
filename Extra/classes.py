@@ -25,5 +25,7 @@ class replies:
     SND_AUDIO = 'Sending audio... ⬆️'
     SND_VIDEO = 'Sending video... ⬆️'
     DONE = 'Done! ✅'
-    DWN_ERROR = 'Download ERROR! Unsupported URL ❌'
-    GT_LINK = 'Getting download link...'
+    DWN_ERROR = 'Download ERROR! Bad URL ❌'
+    EXPT_ERROR = ('🚨🚨🚨🚨🚨🚨🚨' + '\n'
+                + 'EXCEPTION ERROR' + '\n'
+                + '🚨🚨🚨🚨🚨🚨🚨')

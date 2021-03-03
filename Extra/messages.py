@@ -39,6 +39,13 @@ def print_log(typem, case, chatid, cid, url, message, bot):
 		progress_msg(chatid, 5, typem, bot)
 		return
 
+def print_except(exception, chatid, url, bot):
+	print('\n' + bcolors.FAIL + 'Exception: ' + str(exception) + '\n'
+	+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
+	+ bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url[-1] + bcolors.ENDC)
+	bot.send_message(chatid, replies.EXPT_ERROR)
+	return
+
 def reply_error(message, error_status, bot):
 	if error_status == 1:
 		bot.reply_to(message, replies.URL_ERROR)
@@ -67,5 +74,3 @@ def progress_msg(chatid, progress, typem, bot):
 		return
 	if progress	== 5:
 		bot.send_message(chatid, replies.DWN_ERROR)
-	if progress == 6:
-		bot.send_message(chatid, replies.GT_LINK)
