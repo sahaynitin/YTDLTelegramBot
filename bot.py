@@ -60,9 +60,10 @@ def dlmp3(message):
     try:
         url = message.text.split()[1]
         if is_supported(url, chatid, bot): #CHECK IF URL IS SUPPORTED
+            lurl = re.findall(r'(https?://\S+)', url)
             download('audio', 'OK', chatid, date, url, message, bot)
         else:
-            print_log('audio', 'SUPP_ERROR', chatid, date, url, message, bot)
+            print_log('audio', 'SUPP_ERROR', chatid, url, message, bot)
     except:
         print_log('audio', 'URL_ERROR', chatid, 'NO_URL', message, bot)
 

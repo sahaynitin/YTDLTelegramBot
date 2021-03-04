@@ -2,3 +2,4 @@
 .vscode/
 env/
 Extra/__pycache__/
+.idea/
