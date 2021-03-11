@@ -37,7 +37,7 @@ def print_log(typem, case, chatid, url, message, bot):
 		print('\n' + bcolors.FAIL + 'DOWNLOAD OF ' + typem + ' FAILED: Unsupported URL\n'
 		+ bcolors.OKGREEN + 'Chat ID: '+ bcolors.OKCYAN + str(chatid) + '\n'
 		+ bcolors.OKGREEN + 'URL: '+ bcolors.OKCYAN + url + bcolors.ENDC)
-		progress_msg(chatid, 5, typem, bot)
+		bot.send_message(chatid, replies.DWN_ERROR)
 		return
 
 def print_except(exception, chatid, url, bot):
@@ -55,23 +55,3 @@ def reply_error(message, error_status, bot):
 	if error_status == 2:
 		bot.reply_to(message, replies.SUPP_ERROR)
 		return
-
-def progress_msg(chatid, progress, typem, bot):
-	if progress == 1:
-		bot.send_message(chatid, replies.OTW)
-		return
-	if progress == 2:
-		bot.send_message(chatid, replies.DOWNLOADING)
-		return
-	if progress == 3:
-		if typem == 'video':
-			bot.send_message(chatid, replies.SND_VIDEO)
-			return
-		if typem == 'audio':
-			bot.send_message(chatid, replies.SND_AUDIO)
-			return
-	if progress == 4:
-		bot.send_message(chatid, replies.DONE)
-		return
-	if progress	== 5:
-		bot.send_message(chatid, replies.DWN_ERROR)

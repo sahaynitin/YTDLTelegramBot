@@ -28,8 +28,9 @@ class replies: #TEXT FOR REPLIES
     DOWNLOADING = '⬇️ Downloading ⬇️'
     SND_AUDIO = '⬆️ Sending audio ⬆️'
     SND_VIDEO = '⬆️ Sending video ⬆️'
-    FILE_TOO_BIG = ('File too big! 😞\n' + '\n' +
-                    '⬆️ Sending download link instead ⬆️')
-    DONE = '✅ Done! ✅'
+    CHK_FILE_SIZE = 'Checking File Size 🧐'
+    FILE_TOO_BIG = 'File too big! 😞'
+    GET_DWLINK = 'Getting Download Link...🔗'
+    DONE = '✅ Done ✅'
     DWN_ERROR = '🚨 DOWNLOAD ERROR! 🚨'
     EXC_ERROR = '🚨 EXCEPTION ERROR! 🚨'

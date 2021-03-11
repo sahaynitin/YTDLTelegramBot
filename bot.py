@@ -22,12 +22,11 @@ def query_handler(call):
     if call.data == 'howto':
         how_to_message(call.message)
 
-@bot.message_handler(regexp=(r'(https?://\S+)'))
-def function_name(message):
+@bot.message_handler(commands=['dl', 'dlmp3']) #CHECK FOR /errors
+def new_way(message):
     markup = telebot.types.InlineKeyboardMarkup()
-    markup.add(telebot.types.InlineKeyboardButton(text='MP4 📹', callback_data='dl'))
-    markup.add(telebot.types.InlineKeyboardButton(text='MP3 🎵', callback_data='dlmp3'))
-    bot.send_message(message.chat.id, 'URL: ' + '' + message.text.split()[0] + '\nSelect Download Option:', reply_markup=markup, disable_web_page_preview=True)
+    markup.add(telebot.types.InlineKeyboardButton(text='ℹ️ How to download ℹ️', callback_data='howto'))
+    bot.reply_to(message, replies.NEW_WAY, reply_markup=markup)
 
 @bot.message_handler(commands=['start']) #CHECK FOR /start
 def start_message(message):
@@ -52,11 +51,12 @@ def errors_info(message):
     print_log_simple('errors', message.chat.id)
     bot.send_message(message.chat.id, replies.ERRORS)
 
-@bot.message_handler(commands=['dl', 'dlmp3']) #CHECK FOR /errors
-def new_way(message):
+@bot.message_handler(regexp=(r'(https?://\S+)'))
+def function_name(message):
     markup = telebot.types.InlineKeyboardMarkup()
-    markup.add(telebot.types.InlineKeyboardButton(text='ℹ️ How to download ℹ️', callback_data='howto'))
-    bot.reply_to(message, replies.NEW_WAY, reply_markup=markup)
+    markup.add(telebot.types.InlineKeyboardButton(text='MP4 📹', callback_data='dl'))
+    markup.add(telebot.types.InlineKeyboardButton(text='MP3 🎵', callback_data='dlmp3'))
+    bot.send_message(message.chat.id, 'URL: ' + '' + message.text.split()[0] + '\nSelect Download Option:', reply_markup=markup, disable_web_page_preview=True)
 
 @bot.message_handler(regexp="")
 def no_url(message):
