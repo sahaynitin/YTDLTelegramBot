@@ -20,7 +20,7 @@ class replies: #TEXT FOR REPLIES
                'Welcome to THE DOWNLOADER 👨🏻‍🔧⬇️ made by @galisteo02 ✌️🏻')
     ERRORS = ('🚨 No URL given 🚨: You haven\'t given a URL\n'+
 	       '🚨 Invalid URL given 🚨: You have given an invalid URL\n' +
-	       '🚨 Download ERROR! Bad URL 🚨: Video couldn\'t be downloaded due to a bad URL\n' +
+	       '🚨 DOWNLOAD ERROR! 🚨: Video couldn\'t be downloaded due to an unexpected YTDL error\n' +
            '🚨 EXCEPTION ERROR 🚨: Exception raised in code (contact @galisteo02 so it can get fixed)')
     URL_ERROR = '🚨 No URL given 🚨'
     SUPP_ERROR = '🚨 Invalid URL given 🚨'
@@ -31,5 +31,5 @@ class replies: #TEXT FOR REPLIES
     FILE_TOO_BIG = ('File too big! 😞\n' + '\n' +
                     '⬆️ Sending download link instead ⬆️')
     DONE = '✅ Done! ✅'
-    DWN_ERROR = '🚨 Download ERROR! Bad URL 🚨'
-    EXC_ERROR = '🚨 EXCEPTION ERROR 🚨'
+    DWN_ERROR = '🚨 DOWNLOAD ERROR! 🚨'
+    EXC_ERROR = '🚨 EXCEPTION ERROR! 🚨'
