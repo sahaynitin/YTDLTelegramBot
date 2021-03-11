@@ -12,9 +12,10 @@ class bcolors: #COLORS CLASS FOR COLOR CODING PRINT LOGS
 class replies: #TEXT FOR REPLIES
     HELP = ('/start: Display welcome message!\n'+
 	       '/help: Display all commands available with descriptions\n' +
-           '/errors: Display info about the errors that can happen\n' +
-	       '/dl: Download a video -> /dl URL\n' +
-           '/dlmp3: Download a video on mp3 -> /dlmp3 URL')
+           '/errors: Display info about the errors that can happen\n')
+    HOW_TO = ('Just send a URL to the bot and select a download option, no commands, just a message 😎\n' +
+              'The bot will take care of the rest 👨🏻‍🔧')
+    NEW_WAY = 'There is a new way to download!! Check it out ⬇️'
     WELCOME = ('Hi!! 👋🏻\n' +
                'Welcome to THE DOWNLOADER 👨🏻‍🔧⬇️ made by @galisteo02 ✌️🏻')
     ERRORS = ('🚨 No URL given 🚨: You haven\'t given a URL\n'+

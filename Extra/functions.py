@@ -1,7 +1,7 @@
 import youtube_dl
 import os
-import telebot
-from Extra.messages import print_log, print_log_simple, progress_msg, print_except
+from Extra.messages import print_log, progress_msg, print_except
+from datetime import datetime
 from Extra.classes import replies
 
 # date: date
@@ -48,8 +48,10 @@ def getfilename(date, chatid, url, bot):
     except Exception as error:
             print_except(error, chatid, url, bot)
 
-def download(typem, case, chatid, date, url, message, bot, lurl):
+def download(typem, case, chatid, url, message, bot, lurl):
     try:
+        now = datetime.now()
+        date = now.strftime("%d%m%Y" + "%H%M%S")
         print_log(typem, case, chatid, url, message, bot)
         progress_msg(chatid, 1, typem, bot)
         if typem == 'video':

@@ -1,5 +1,4 @@
 from Extra.classes import bcolors, replies
-import telebot
 
 # url: Content URL [str]
 # typem: Type Of Petition [MP3, MP4, ID]
