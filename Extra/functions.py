@@ -1,6 +1,7 @@
 import youtube_dl
 import pafy
 import os
+import time
 from Extra.messages import print_log, print_except
 from datetime import datetime
 from Extra.classes import replies
@@ -60,18 +61,40 @@ def check_file_size(url):
     except:
         pass
 
-def download(typem, case, chatid, url, message, bot, lurl):
-    msg = bot.send_message(chatid, 'Progress: ' + replies.GET_DWLINK)
-    if check_file_size(url) == 1:
-        bot.edit_message_text('Progress: ' + replies.FILE_TOO_BIG, msg.chat.id, msg.message_id)
-        get_link(url, message, bot, chatid)
-        bot.edit_message_text('Progress: ' + replies.DONE, msg.chat.id, msg.message_id)
+def get_link(url, message, bot, chatid):
+    ydl = youtube_dl.YoutubeDL({'outtmpl': '%(id)s%(ext)s'})
+    try:
+        with ydl:
+            result = ydl.extract_info(url, download=False) # We just want to extract the info
+        if 'entries' in result: # Can be a playlist or a list of videos
+            video = result['entries'][0]
+        else: # Just a video
+            video = result
+        a = -1
+        for i in video['formats']:
+            a = a + 1
+        link = '<a href=\"' + video['formats'][a]['url'] + '\">' + video['formats'][a]['format_note'] + '</a>'
+        bot.reply_to(message, 'Quality ' + link, parse_mode='HTML')
         return
+    except Exception as error:
+        print_except(error, chatid, url, bot)
+
+def download(typem, case, chatid, url, message, bot, lurl):
+    msg = bot.send_message(chatid, 'Progress: ' + replies.CHK_FILE_SIZE)
+    if typem == 'video':
+        if check_file_size(url) == 1:
+            bot.edit_message_text('Progress: ' + replies.FILE_TOO_BIG, msg.chat.id, msg.message_id)
+            time.sleep(0.5)
+            bot.edit_message_text('Progress: ' + replies.GET_DWLINK, msg.chat.id, msg.message_id)
+            get_link(url, message, bot, chatid)
+            time.sleep(0.5)
+            bot.edit_message_text('Progress: ' + replies.DONE, msg.chat.id, msg.message_id)
+            return
     try:
         now = datetime.now()
         date = now.strftime("%d%m%Y" + "%H%M%S")
         print_log(typem, case, chatid, url, message, bot)
-        bot.edit_message_text('Progress: ' + replies.CHK_FILE_SIZE, msg.chat.id, msg.message_id)
+        bot.edit_message_text('Progress: ' + replies.OTW, msg.chat.id, msg.message_id)
         if typem == 'video':
             ydl_opts = {'outtmpl': date + '_' + str(chatid) + '.%(ext)s'}
         if typem == 'audio':
@@ -113,21 +136,3 @@ def download(typem, case, chatid, url, message, bot, lurl):
             if filename:
                 os.remove(filename)
             print_except(error, chatid, url, bot)
-
-def get_link(url, message, bot, chatid):
-    ydl = youtube_dl.YoutubeDL({'outtmpl': '%(id)s%(ext)s'})
-    try:
-        with ydl:
-            result = ydl.extract_info(url, download=False) # We just want to extract the info
-        if 'entries' in result: # Can be a playlist or a list of videos
-            video = result['entries'][0]
-        else: # Just a video
-            video = result
-        a = -1
-        for i in video['formats']:
-            a = a + 1
-        link = '<a href=\"' + video['formats'][a]['url'] + '\">' + video['formats'][a]['format_note'] + '</a>'
-        bot.reply_to(message, 'Quality ' + link, parse_mode='HTML')
-        return
-    except Exception as error:
-        print_except(error, chatid, url, bot)
