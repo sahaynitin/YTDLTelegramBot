@@ -80,21 +80,21 @@ def get_link(url, message, bot, chatid):
         print_except(error, chatid, url, bot)
 
 def download(typem, case, chatid, url, message, bot, lurl):
-    msg = bot.send_message(chatid, 'Progress: ' + replies.CHK_FILE_SIZE)
+    msg = bot.send_message(chatid, '<b>Progress: </b>' + replies.CHK_FILE_SIZE, parse_mode='HTML')
     if typem == 'video':
         if check_file_size(url) == 1:
-            bot.edit_message_text('Progress: ' + replies.FILE_TOO_BIG, msg.chat.id, msg.message_id)
+            bot.edit_message_text('<b>Progress: </b>' + replies.FILE_TOO_BIG, msg.chat.id, msg.message_id, parse_mode='HTML')
             time.sleep(0.5)
-            bot.edit_message_text('Progress: ' + replies.GET_DWLINK, msg.chat.id, msg.message_id)
+            bot.edit_message_text('<b>Progress: </b>' + replies.GET_DWLINK, msg.chat.id, msg.message_id, parse_mode='HTML')
             get_link(url, message, bot, chatid)
             time.sleep(0.5)
-            bot.edit_message_text('Progress: ' + replies.DONE, msg.chat.id, msg.message_id)
+            bot.edit_message_text('<b>Progress: </b>' + replies.DONE, msg.chat.id, msg.message_id, parse_mode='HTML')
             return
     try:
         now = datetime.now()
         date = now.strftime("%d%m%Y" + "%H%M%S")
         print_log(typem, case, chatid, url, message, bot)
-        bot.edit_message_text('Progress: ' + replies.OTW, msg.chat.id, msg.message_id)
+        bot.edit_message_text('<b>Progress: </b>' + replies.OTW, msg.chat.id, msg.message_id, parse_mode='HTML')
         if typem == 'video':
             ydl_opts = {'outtmpl': date + '_' + str(chatid) + '.%(ext)s'}
         if typem == 'audio':
@@ -107,7 +107,7 @@ def download(typem, case, chatid, url, message, bot, lurl):
             'preferredquality': '192',
             }],}
         ydl = youtube_dl.YoutubeDL(ydl_opts)
-        bot.edit_message_text('Progress: ' + replies.DOWNLOADING, msg.chat.id, msg.message_id)
+        bot.edit_message_text('<b>Progress: </b>' + replies.DOWNLOADING, msg.chat.id, msg.message_id, parse_mode='HTML')
         try:
             with ydl:
                 ydl.download(lurl)
@@ -117,20 +117,20 @@ def download(typem, case, chatid, url, message, bot, lurl):
         filename = getfilename(date, chatid, url, bot)
         file = open(filename, 'rb')
         if typem == 'video':
-            bot.edit_message_text('Progress: ' + replies.SND_VIDEO, msg.chat.id, msg.message_id)
+            bot.edit_message_text('<b>Progress: </b>' + replies.SND_VIDEO, msg.chat.id, msg.message_id, parse_mode='HTML')
             bot.send_video(chatid, file)
         if typem == 'audio':
-            bot.edit_message_text('Progress: ' + replies.SND_AUDIO, msg.chat.id, msg.message_id)
+            bot.edit_message_text('<b>Progress: </b>' + replies.SND_AUDIO, msg.chat.id, msg.message_id, parse_mode='HTML')
             bot.send_audio(chatid, file)
         os.remove(filename)
-        bot.edit_message_text('Progress: ' + replies.DONE, msg.chat.id, msg.message_id)
+        bot.edit_message_text('<b>Progress: </b>' + replies.DONE, msg.chat.id, msg.message_id, parse_mode='HTML')
     except:
         try:
             if typem == 'video':
-                bot.edit_message_text(replies.FILE_TOO_BIG + '\n' + 'Progress: ' + replies.GET_DWLINK, msg.chat.id, msg.message_id)
+                bot.edit_message_text(replies.FILE_TOO_BIG + '\n' + '<b>Progress: </b>' + replies.GET_DWLINK, msg.chat.id, msg.message_id, parse_mode='HTML')
                 os.remove(filename)
                 get_link(url, message, bot, chatid)
-                bot.edit_message_text('Progress: ' + replies.DONE, msg.chat.id, msg.message_id)
+                bot.edit_message_text('<b>Progress: </b>' + replies.DONE, msg.chat.id, msg.message_id, parse_mode='HTML')
 
         except Exception as error:
             if filename:

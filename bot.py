@@ -16,8 +16,12 @@ def query_handler(call):
     if call.data == 'errors':
         errors_info(call.message)
     if call.data == 'dl':
+        bot.answer_callback_query(call.id, text='MP4 Download Selected')
+        bot.edit_message_text(text= '<b>URL: </b>' + '' + url + '<b>\nSelect Download Option:</b> MP4', chat_id= msgcid, message_id= msgid, disable_web_page_preview=True, parse_mode='HTML')
         dl(call.message)
     if call.data == 'dlmp3':
+        bot.answer_callback_query(call.id, text='MP3 Download Selected')
+        bot.edit_message_text(text= '<b>URL: </b>' + '' + url + '<b>\nSelected Download Option:</b> MP3', chat_id= msgcid, message_id= msgid, disable_web_page_preview=True, parse_mode='HTML')
         dlmp3(call.message)
     if call.data == 'howto':
         how_to_message(call.message)
@@ -53,10 +57,19 @@ def errors_info(message):
 
 @bot.message_handler(regexp=(r'(https?://\S+)'))
 def function_name(message):
-    markup = telebot.types.InlineKeyboardMarkup()
-    markup.add(telebot.types.InlineKeyboardButton(text='MP4 📹', callback_data='dl'))
-    markup.add(telebot.types.InlineKeyboardButton(text='MP3 🎵', callback_data='dlmp3'))
-    bot.send_message(message.chat.id, 'URL: ' + '' + message.text.split()[0] + '\nSelect Download Option:', reply_markup=markup, disable_web_page_preview=True)
+    try:
+        global url
+        global msgid
+        global msgcid
+        url = re.search("(?P<url>https?://[^\s'\"]+)", message.text).group("url")
+        markup = telebot.types.InlineKeyboardMarkup()
+        markup.add(telebot.types.InlineKeyboardButton(text='MP4 📹', callback_data='dl'))
+        markup.add(telebot.types.InlineKeyboardButton(text='MP3 🎵', callback_data='dlmp3'))
+        msg = bot.send_message(message.chat.id, '<b>URL: </b>' + '' + url + '<b>\nSelect Download Option</b> ⬇️', reply_markup=markup, disable_web_page_preview=True, parse_mode='HTML')
+        msgid = msg.message_id
+        msgcid = msg.chat.id
+    except Exception as exception:
+        print_except(exception, message.chat.id, url, bot)
 
 @bot.message_handler(regexp="")
 def no_url(message):
