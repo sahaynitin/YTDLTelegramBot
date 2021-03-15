@@ -12,8 +12,10 @@ bot = telebot.TeleBot(token) # OG BOT
 @bot.callback_query_handler(func=lambda call: True)
 def query_handler(call):
     if call.data == 'help':
+        bot.edit_message_text(replies.WELCOME + '\n' + '\n' + 'HELP ⬇️', chat_id=msgcid, message_id= msgid)
         help_message(call.message)
     if call.data == 'errors':
+        bot.edit_message_text(replies.WELCOME + '\n' + '\n' + 'ERRORS INFO ⬇️', chat_id=msgcid, message_id= msgid)
         errors_info(call.message)
     if call.data == 'dl':
         bot.answer_callback_query(call.id, text='MP4 Download Selected')
@@ -24,6 +26,7 @@ def query_handler(call):
         bot.edit_message_text(text= '<b>URL: </b>' + '' + url + '<b>\nSelected Download Option:</b> MP3', chat_id= msgcid, message_id= msgid, disable_web_page_preview=True, parse_mode='HTML')
         dlmp3(call.message)
     if call.data == 'howto':
+        bot.edit_message_text(replies.WELCOME + '\n' + '\n' + 'HOW TO DOWNLOAD ⬇️', chat_id=msgcid, message_id= msgid)
         how_to_message(call.message)
 
 @bot.message_handler(commands=['dl', 'dlmp3']) #CHECK FOR /errors
@@ -34,12 +37,17 @@ def new_way(message):
 
 @bot.message_handler(commands=['start']) #CHECK FOR /start
 def start_message(message):
+    global url
+    global msgid
+    global msgcid
     markup = telebot.types.InlineKeyboardMarkup()
     markup.add(telebot.types.InlineKeyboardButton(text='ℹ️ How to download ℹ️', callback_data='howto'))
     markup.add(telebot.types.InlineKeyboardButton(text='ℹ️ Help ℹ️', callback_data='help'))
     markup.add(telebot.types.InlineKeyboardButton(text='🚨 Errors Info 🚨', callback_data='errors'))
     print_log_simple('start', message.chat.id)
-    bot.send_message(message.chat.id, replies.WELCOME, reply_markup=markup)
+    msg = bot.send_message(message.chat.id, replies.WELCOME, reply_markup=markup)
+    msgid = msg.message_id
+    msgcid = msg.chat.id
 
 @bot.message_handler(commands=['help']) #CHECK FOR /help
 def help_message(message):

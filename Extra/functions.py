@@ -1,7 +1,6 @@
 import youtube_dl
 import pafy
 import os
-import time
 from Extra.messages import print_log, print_except
 from datetime import datetime
 from Extra.classes import replies
