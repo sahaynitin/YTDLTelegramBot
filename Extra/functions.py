@@ -29,24 +29,23 @@ def is_supported(url, chatid, bot): #CHECK IS URL IS SUPPORTED
     except Exception as error:
             print_except(error, chatid, url, bot)
 
-def getfilename(chatid, url, bot):
+def getfilename(date, chatid, url, bot):
     try:
-        video = pafy.new(url)
-        if os.path.isfile(video.title+'_'+str(chatid)+'.mkv'):
+        if os.path.isfile(date+'_'+str(chatid)+'.mkv'):
             extension = '.mkv'
-            filename= video.title+'_'+str(chatid)+extension
+            filename= date+'_'+str(chatid)+extension
             return filename
-        elif os.path.isfile(video.title+'_'+str(chatid)+'.mp4'):
+        elif os.path.isfile(date+'_'+str(chatid)+'.mp4'):
             extension = '.mp4'
-            filename= video.title+'_'+str(chatid)+extension
+            filename= date+'_'+str(chatid)+extension
             return filename
-        elif os.path.isfile(video.title+'_'+str(chatid)+'.webm'):
+        elif os.path.isfile(date+'_'+str(chatid)+'.webm'):
             extension = '.webm'
-            filename= video.title+'_'+str(chatid)+extension
+            filename= date+'_'+str(chatid)+extension
             return filename
-        elif os.path.isfile(video.title+'_'+str(chatid)+'.mp3'):
+        elif os.path.isfile(date+'_'+str(chatid)+'.mp3'):
             extension = '.mp3'
-            filename= video.title+'_'+str(chatid)+extension
+            filename= date+'_'+str(chatid)+extension
             return filename
     except Exception as error:
             print_except(error, chatid, url, bot)
@@ -63,8 +62,6 @@ def check_file_size(url, typem):
             best = video.getbestaudio()
             if best.get_filesize() >= 50000000:
                 return (1)
-        else:
-          return (0)
     except:
         pass
 
@@ -96,14 +93,15 @@ def download(typem, case, chatid, url, message, bot, lurl):
         bot.edit_message_text('<b>Progress: </b>' + replies.DONE, msg.chat.id, msg.message_id, parse_mode='HTML') 
         return
     try:
-        video = pafy.new(url)
+        now = datetime.now()
+        date = now.strftime("%d%m%Y" + "%H%M%S")
         print_log(typem, case, chatid, url, message, bot)
         bot.edit_message_text('<b>Progress: </b>' + replies.OTW, msg.chat.id, msg.message_id, parse_mode='HTML')
         if typem == 'video':
-            ydl_opts = {'outtmpl': video.title + '_' + str(chatid) + '.%(ext)s'}
+            ydl_opts = {'outtmpl': date + '_' + str(chatid) + '.%(ext)s'}
         if typem == 'audio':
             ydl_opts = {
-            'outtmpl': video.title + '_' + str(chatid) + '.%(ext)s',
+            'outtmpl': date + '_' + str(chatid) + '.%(ext)s',
             'format': 'bestaudio/best',
             'postprocessors': [{
             'key': 'FFmpegExtractAudio',
@@ -118,7 +116,7 @@ def download(typem, case, chatid, url, message, bot, lurl):
         except youtube_dl.utils.DownloadError:
             print_log(typem, 'D_ERROR', chatid, url, message, bot)
             return
-        filename = getfilename(chatid, url, bot)
+        filename = getfilename(date, chatid, url, bot)
         file = open(filename, 'rb')
         if typem == 'video':
             bot.edit_message_text('<b>Progress: </b>' + replies.SND_VIDEO, msg.chat.id, msg.message_id, parse_mode='HTML')
