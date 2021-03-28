@@ -3,7 +3,7 @@ import pafy
 import os
 from Extra.messages import print_log, print_except
 from datetime import datetime
-from Extra.classes import replies
+from Extra.classes import bcolors, replies
 
 # date: date
 # url: Content URL [str]
@@ -124,11 +124,13 @@ def download(typem, case, chatid, url, message, bot, lurl):
             bot.edit_message_text('<b>Progress: </b>' + replies.SND_AUDIO, msg.chat.id, msg.message_id, parse_mode='HTML')
             bot.send_audio(chatid, file)
         os.remove(filename)
+        print(bcolors.WARNING + "File " + filename + " REMOVED" + bcolors.ENDC)
         bot.edit_message_text('<b>Progress: </b>' + replies.DONE, msg.chat.id, msg.message_id, parse_mode='HTML')
     except:
         try:
             bot.edit_message_text(replies.FILE_TOO_BIG + '\n' + '<b>Progress: </b>' + replies.GET_DWLINK, msg.chat.id, msg.message_id, parse_mode='HTML')
             os.remove(filename)
+            print(bcolors.WARNING + "File " + filename + " REMOVED" + bcolors.ENDC)
             quality, durl = get_link(url, typem)
             link = '<a href=\"' + durl + '\">' + quality + '</a>'
             bot.reply_to(message, 'Quality ' + link, parse_mode='HTML')
@@ -137,4 +139,5 @@ def download(typem, case, chatid, url, message, bot, lurl):
         except Exception as error:
             if filename:
                 os.remove(filename)
+                print(bcolors.WARNING + "File " + filename + " REMOVED" + bcolors.ENDC)
             print_except(error, chatid, url, bot)
