@@ -97,11 +97,15 @@ def download(typem, case, chatid, url, message, bot, lurl):
         print_log(typem, case, chatid, url, message, bot)
         bot.edit_message_text('<b>Progress: </b>' + replies.OTW, msg.chat.id, msg.message_id, parse_mode='HTML')
         if typem == 'video':
-            ydl_opts = {'outtmpl': date + '_' + str(chatid) + '.%(ext)s'}
+            ydl_opts = {
+                'outtmpl': date + '_' + str(chatid) + '.%(ext)s',
+                'cookiefile': 'cookies.txt'
+                }
         if typem == 'audio':
             ydl_opts = {
             'outtmpl': date + '_' + str(chatid) + '.%(ext)s',
             'format': 'bestaudio/best',
+            'cookiefile': 'cookies.txt',
             'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
