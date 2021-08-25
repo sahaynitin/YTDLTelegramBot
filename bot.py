@@ -93,8 +93,10 @@ def function_name(message):
         cid = message.chat.id
         url = re.search("(?P<url>https?://[^\s'\"]+)", message.text).group("url")
         markup = telebot.types.InlineKeyboardMarkup()
-        markup.add(telebot.types.InlineKeyboardButton(text='MP4 📹', callback_data='dl'))
-        markup.add(telebot.types.InlineKeyboardButton(text='MP3 🎵', callback_data='dlmp3'))
+        markup.add(
+            telebot.types.InlineKeyboardButton(text='MP4 📹', callback_data='dl'),
+            telebot.types.InlineKeyboardButton(text='MP3 🎵', callback_data='dlmp3'),
+        )
         markup.add(telebot.types.InlineKeyboardButton(text='CANCEL DOWNLOAD 🛑', callback_data='canceldl'))
         msg = bot.send_message(message.chat.id, '<b>URL: </b>' + '' + url + '<b>\nSelect Download Option</b> ⬇️', reply_markup=markup, disable_web_page_preview=True, parse_mode='HTML')
         msgid = msg.message_id
@@ -109,7 +111,6 @@ def no_url(message):
 @bot.message_handler()
 def fail(message):
     bot.send_message(message.chat.id, 'Failed to retrieve message from past session 🚨')
-
 
 def dl(message):
     try:
