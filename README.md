@@ -16,6 +16,21 @@ To download a video just send the video URL and select one of the options given 
 - **Cancel Download** --> It cancels the download
 
 ## Requirements to host your own bot
-You will need Python installed, the current required version can be found in [runtime.txt](https://github.com/somedevv/YTDLTelegramBot/blob/master/runtime.txt), 
-also all the Python packages needed are in [requiremets.txt](https://github.com/somedevv/YTDLTelegramBot/blob/master/requirements.txt). Also you will need a 
-**Telegram Bot Token**, which you can get using the [Bot Father](https://t.me/botfather) in Telegram.
+- **Python**: the current required version can be found in [runtime.txt](https://github.com/somedevv/YTDLTelegramBot/blob/master/runtime.txt)
+- **Dependences**: You can find them in [requiremets.txt](https://github.com/somedevv/YTDLTelegramBot/blob/master/requirements.txt) and install them with Python.
+- **Telegram Bot Token**: you can get one using the [Bot Father](https://t.me/botfather) in Telegram.
+
+## Run your own bot
+After following the requirements, you will need to give the program your token so it can start the bot, to do that you have two ways:
+
+1. **The recommended way**:
+Add the token as an environment variable on your system called **TELEGRAM_TOKEN**.
+
+2. **Not recommended way**:
+Hard code your token directly into the code apliying these changes in [bot.py](https://github.com/somedevv/YTDLTelegramBot/blob/master/bot.py):
+```python
+#token = os.environ['TELEGRAM_TOKEN']
+bot = telebot.TeleBot("YOUR_TOKEN")
+```
+
+Then just run ```python bot.py``` and the bot is ready to use.
