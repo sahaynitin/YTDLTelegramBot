@@ -17,7 +17,7 @@ class replies: #TEXT FOR REPLIES
               'The bot will take care of the rest 👨🏻‍🔧')
     NEW_WAY = 'There is a new way to download!! Check it out ⬇️'
     WELCOME = ('Hi!! 👋🏻\n' +
-               'Welcome to THE DOWNLOADER 👨🏻‍🔧⬇️ made by @galisteo02 ✌️🏻')
+               'Welcome to the Social Downloader 👨🏻‍🔧⬇️ bot, made by @galisteo02 ✌️🏻')
     ERRORS = ('🚨 No URL given 🚨: You haven\'t given a URL\n'+
 	       '🚨 Invalid URL given 🚨: You have given an invalid URL\n' +
 	       '🚨 DOWNLOAD ERROR! 🚨: Video couldn\'t be downloaded due to an unexpected YTDL error, try again later. '
