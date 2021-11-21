@@ -5,9 +5,8 @@ from Extra.classes import replies
 from Extra.functions import is_supported, download
 from Extra.messages import print_log, print_log_simple, print_except
 
-token = os.environ['TELEGRAM_TOKEN'] #GET TOKEN FROM HEROKU
-bot = telebot.TeleBot(token) # OG BOT
-#bot = telebot.TeleBot("***REMOVED***") #TEST BOT
+token = os.environ['TELEGRAM_TOKEN'] #GET TOKEN FROM ENVIRONMENT
+bot = telebot.TeleBot(token)
 
 @bot.callback_query_handler(func=lambda call: True)
 def query_handler(call):
